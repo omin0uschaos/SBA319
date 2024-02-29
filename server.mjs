@@ -24,6 +24,8 @@ app.get('/seed', async (req, res)=>{
     await Songs.create(songs);
     res.send('Database Seeded');
 })
+
+//separate seeding for playlist, special consideration made for generated ids.
 app.get('/seedplaylist', async (req, res) =>{
     await Playlists.deleteMany({});
     await Playlists.create(playlists);
