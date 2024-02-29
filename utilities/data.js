@@ -24,4 +24,4 @@ const playlists = [
 ];
 
 
-module.exports = fruits;
+module.exports = { users, songs, playlists };
