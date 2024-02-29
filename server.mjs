@@ -6,6 +6,8 @@ import Users from './models/usersSchema.mjs';
 import Songs from './models/songsSchema.mjs';
 import Playlists from './models/playlistsSchema.mjs';
 import { users, songs, playlists } from './utilities/sampleData.mjs'
+import { userIdGen, songIdGen } from './scripts/idGen.mjs';
+
 
 dotenv.config();
 const app = express();
