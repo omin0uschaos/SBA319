@@ -24,4 +24,4 @@ const playlists = [
 ];
 
 
-module.exports = { users, songs, playlists };
+export { users, songs, playlists };

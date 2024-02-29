@@ -4,18 +4,32 @@ import mongoose from 'mongoose';
 
 import Users from './models/usersSchema.mjs';
 import Songs from './models/songsSchema.mjs';
-import Playlists from './models/usersSchema.mjs';
-import { users, songs, playlists } from './path/to/sampleData.mjs'
+import Playlists from './models/playlistsSchema.mjs';
+import { users, songs, playlists } from './utilities/sampleData.mjs'
+
+dotenv.config();
+const app = express();
+const PORT = process.env.PORT || 3000;
+await mongoose.connect(process.env.MONGO_URI);
+
+app.use(express.json());
 
 //Populate Database with sample data
 app.get('/seed', async (req, res)=>{
     //Clear the sample data to ensure data isn't duplicated
     await Users.deleteMany({});
     await Songs.deleteMany({});
-    await Playlists.deleteMany({});
+    // await Playlists.deleteMany({});
 
     await Users.create(users);
     await Songs.create(songs);
-    await Playlists.create(playlists);
+    // await Playlists.create(playlists);
     res.send('Database Seeded');
 })
+
+
+
+//Listen
+app.listen(PORT, () => {
+    console.log(`Server is listening on port: ${PORT}`);
+  });
