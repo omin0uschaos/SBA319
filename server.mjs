@@ -19,12 +19,15 @@ app.get('/seed', async (req, res)=>{
     //Clear the sample data to ensure data isn't duplicated
     await Users.deleteMany({});
     await Songs.deleteMany({});
-    // await Playlists.deleteMany({});
 
     await Users.create(users);
     await Songs.create(songs);
-    // await Playlists.create(playlists);
     res.send('Database Seeded');
+})
+app.get('/seedplaylist', async (req, res) =>{
+    await Playlists.deleteMany({});
+    await Playlists.create(playlists);
+    res.send('Playlist Database Seeded');
 })
 
 

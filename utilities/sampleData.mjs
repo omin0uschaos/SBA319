@@ -16,11 +16,11 @@ const songs = [
 
 
 const playlists = [
-  { mood: 'Happy', songIDs: ['songId1', 'songId3'], createdBy: 'userId1' },
-  { mood: 'Sad', songIDs: ['songId2'], createdBy: 'userId2' },
-  { mood: 'Energetic', songIDs: ['songId3', 'songId4'], createdBy: 'userId3' },
-  { mood: 'Chill', songIDs: ['songId4', 'songId5'], createdBy: 'userId4' },
-  { mood: 'Romantic', songIDs: ['songId5', 'songId1'], createdBy: 'userId5' },
+  { mood: 'Happy', songIDs: ['65e0309a9843765a36f82e35', '65e0309a9843765a36f82e33'], createdBy: '65e0309a9843765a36f82e2a' },
+  { mood: 'Sad', songIDs: ['65e0309a9843765a36f82e34'], createdBy: '65e0309a9843765a36f82e2c' },
+  { mood: 'Energetic', songIDs: ['65e0309a9843765a36f82e36', '65e0309a9843765a36f82e35'], createdBy: '65e0309a9843765a36f82e2b' },
+  { mood: 'Chill', songIDs: ['65e0309a9843765a36f82e37', '65e0309a9843765a36f82e35'], createdBy: '65e0309a9843765a36f82e29' },
+  { mood: 'Romantic', songIDs: ['65e0309a9843765a36f82e34', '65e0309a9843765a36f82e33'], createdBy: '65e0309a9843765a36f82e2d' },
 ];
 
 
