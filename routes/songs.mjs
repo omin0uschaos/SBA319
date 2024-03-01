@@ -17,11 +17,11 @@ router.get('/api', async (req, res) => {
         title: "MoodAMP",
         subTitle: `Add New Song`,
         content: `
-            <form action="" method="post">
-                <input type="text" placeholder="Song Title" id="song-title">
-                <input type="text" placeholder="Artist" id="song-artist">
-                <input type="number" min="0" placeholder="Song Duration(Seconds)" id="song-duration">
-                <select name="song-mood" id="song-mood">
+            <form action="/songs/add" method="post">
+                <input type="text" name="songtitle" placeholder="Song Title" id="song-title">
+                <input type="text" name="songartist" placeholder="Artist" id="song-artist">
+                <input type="number" name="songduration" min="0" placeholder="Song Duration(Seconds)" id="song-duration">
+                <select name="songmood" id="song-mood">
                     <option value="Mood">Choose Mood</option>
                     <option value="Happy">Happy</option>
                     <option value="Sad">Sad</option>
@@ -43,6 +43,16 @@ router.get('/api', async (req, res) => {
             </form> `
     };
     res.render("index", options);
+})
+
+router.post('/add', (req, res) => {
+    try {
+        const { songtitle, songartist, songduration, songmood } = req.body
+        console.log(req.body);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error registering the user');
+    }
 })
 
 export default router;

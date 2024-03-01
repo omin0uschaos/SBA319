@@ -12,7 +12,7 @@ import { users, songs, playlists } from './utilities/sampleData.mjs';
 import usersRouter from './routes/users.mjs';
 import songsRouter from './routes/songs.mjs';
 import playlistsRouter from './routes/playlists.mjs';
-
+import errorHandler from './utilities/errorHandler.mjs'
 
 
 
@@ -109,7 +109,7 @@ app.get('/', async (req, res) => {
       res.status(500).json({ msg: 'Server Error' });
     }
   });
-
+app.use(errorHandler);
 //Listen
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`);
