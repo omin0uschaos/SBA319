@@ -2,7 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import fs from 'fs'
+import fs from 'fs';
+import bcrypt from 'bcrypt';
 
 import Users from './models/usersSchema.mjs';
 import Songs from './models/songsSchema.mjs';
