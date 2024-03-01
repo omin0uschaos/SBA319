@@ -12,11 +12,16 @@ router.get('/api', async (req, res) => {
     }
   });
 
-router.get('/', (req, res)=>{
+router.get('/register', (req, res)=>{
     const options = {
         title: "MoodAMP",
         subTitle: `User Registration`,
-        content: ` <br /><br />`
+        content: `
+            <form action="" method="post">
+                <input type="text" placeholder="Username">
+                <input type="password" name="password" placeholder="Password" id="password-form">
+                <input type="submit" value="Submit">
+            </form> `
     };
     res.render("index", options);
 })
