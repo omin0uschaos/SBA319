@@ -1,5 +1,6 @@
 import express from 'express';
 import Songs from '../models/songsSchema.mjs';
+import Playlists from '../models/playlistsSchema.mjs'
 const router = express.Router();
 
 router.get('/api', async (req, res) => {
@@ -18,11 +19,11 @@ router.get('/api', async (req, res) => {
         subTitle: `Add New Song`,
         content: `
             <form action="/songs/add" method="post">
-                <input type="text" name="songtitle" placeholder="Song Title" id="song-title">
-                <input type="text" name="songartist" placeholder="Artist" id="song-artist">
-                <input type="number" name="songduration" min="0" placeholder="Song Duration(Seconds)" id="song-duration">
-                <select name="songmood" id="song-mood">
-                    <option value="Mood">Choose Mood</option>
+                <input type="text" name="title" placeholder="Song Title" id="song-title" required>
+                <input type="text" name="artist" placeholder="Artist" id="song-artist" required>
+                <input type="number" name="duration" min="0" placeholder="Song Duration(Seconds)" id="song-duration" required>
+                <select name="mood" id="song-mood" required>
+                    <option value="">Choose Mood</option>
                     <option value="Happy">Happy</option>
                     <option value="Sad">Sad</option>
                     <option value="Energetic">Energetic</option>
@@ -39,19 +40,31 @@ router.get('/api', async (req, res) => {
                     <option value="Dreamy">Dreamy</option>
                     <option value="Reflective">Reflective</option>
                 </select>
+                <input type="url" name="link" id="song-link" placeholder="Youtube URL(Include Http(s):" required>
                 <input type="submit" value="Submit">
             </form> `
     };
     res.render("index", options);
 })
 
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res) => {
     try {
-        const { songtitle, songartist, songduration, songmood } = req.body
+        const { title, artist, duration, mood, link } = req.body
+        const newSong = new Songs({ title, artist, duration, mood, link});
+        await newSong.save();
+
+        const playlistToUpdate = await Playlists.find({mood: mood});
+        const options = {
+            title: "MoodAMP",
+            subTitle: `Song Added Success`,
+            content: `
+                <h1>Song Added Successfully</h1>
+            `
+        }
         console.log(req.body);
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error registering the user');
+        res.status(500).send('Error adding the song');
     }
 })
 
