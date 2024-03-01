@@ -9,6 +9,8 @@ import Songs from './models/songsSchema.mjs';
 import Playlists from './models/playlistsSchema.mjs';
 import { users, songs, playlists } from './utilities/sampleData.mjs';
 import songsRouter from './routes/songs.mjs';
+import playlistsRouter from './routes/playlists.mjs';
+
 
 
 dotenv.config();
@@ -38,6 +40,8 @@ app.set("pages", "./views");
 app.set("view engine", "mood");
 
 app.use("/songs", songsRouter);
+app.use("/playlists", playlistsRouter);
+
 
 //Populate Database with sample data (RUN THIS FIRST!)
 app.get('/seed', async (req, res)=>{
