@@ -1,11 +1,14 @@
 import express from 'express';
+import bodyParser from 'body-parser'
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import fs from 'fs'
 
 import Users from './models/usersSchema.mjs';
 import Songs from './models/songsSchema.mjs';
 import Playlists from './models/playlistsSchema.mjs';
-import { users, songs, playlists } from './utilities/sampleData.mjs'
+import { users, songs, playlists } from './utilities/sampleData.mjs';
+import songsRouter from './routes/songs.mjs';
 
 
 dotenv.config();
@@ -14,6 +17,27 @@ const PORT = process.env.PORT || 3000;
 await mongoose.connect(process.env.MONGO_URI);
 
 app.use(express.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
+
+app.engine("mood", (filePath, options, callback) =>{
+    fs.readFile(filePath, (err, content) =>{
+        if (err) return callback(err);
+
+        const rendered = content
+        .toString()
+        .replaceAll("#title#", `${options.title}`)
+        .replace('#sub-title#', `${options.subTitle}`)
+        .replace('#content#', `${options.content}`)
+        return callback(null, rendered);
+    });
+});
+
+app.set("pages", "./views");
+app.set("view engine", "mood");
+
+app.use("/songs", songsRouter);
 
 //Populate Database with sample data (RUN THIS FIRST!)
 app.get('/seed', async (req, res)=>{
@@ -25,6 +49,9 @@ app.get('/seed', async (req, res)=>{
     await Songs.create(songs);
     res.send('Database Seeded');
 })
+
+
+
 
 //separate seeding for playlist, special consideration made for unique ids from database (RUN THIS SECOND!)
 app.get('/seedplaylist', async (req, res) => {
