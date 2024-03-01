@@ -2,7 +2,7 @@ import express from 'express';
 import Playlists from '../models/playlistsSchema.mjs';
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/api', async (req, res) => {
     try {
       const allPlaylists = await Playlists.find({});
       res.json(allPlaylists);

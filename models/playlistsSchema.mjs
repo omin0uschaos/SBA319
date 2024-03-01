@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const playlistSchema = new mongoose.Schema({
   mood: {
     type: String,
-    enum: ["Happy", "Sad", "Energetic", "Chill", "Romantic",            "Melancholic", "Motivational", "Relaxed", "Angry", "Hopeful",       "Nostalgic", "Peaceful", "Excited", "Dreamy", "Reflective"],
+    enum: ["Happy", "Sad", "Energetic", "Chill", "Romantic", "Melancholic", "Motivational", "Relaxed", "Angry", "Hopeful",       "Nostalgic", "Peaceful", "Excited", "Dreamy", "Reflective"],
     required: true,
   },
   songIDs: [{
