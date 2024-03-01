@@ -7,20 +7,20 @@ const users = [
 ];
 
 const songs = [
-  { title: 'Happy Song', artist: 'Happy Artist', duration: 210, mood: 'Happy', link: 'https://youtube.com/happy_song' },
-  { title: 'Sad Melody', artist: 'Melancholic Singer', duration: 180, mood: 'Sad', link: 'https://youtube.com/sad_melody' },
-  { title: 'Energetic Beats', artist: 'DJ Energy', duration: 200, mood: 'Energetic', link: 'https://youtube.com/energetic_beats' },
-  { title: 'Chill Waves', artist: 'Calm Composer', duration: 190, mood: 'Chill', link: 'https://youtube.com/chill_waves' },
-  { title: 'Romantic Tune', artist: 'Lover’s Voice', duration: 185, mood: 'Romantic', link: 'https://youtube.com/romantic_tune' },
+  { title: 'Happy', artist: 'Pharell Williams', duration: 243, mood: 'Happy', link: 'https://youtu.be/g6aXBdrQE14?si=u5teOqVf9B3mmHuv' },
+  { title: 'Jocelyn Flores', artist: 'XXXTENTACION', duration: 120, mood: 'Sad', link: 'https://youtu.be/FAucVNRx_mU?si=zVtj6JHJqg6ozVpP' },
+  { title: 'Drop feat. Fatman Scoop', artist: 'Timbaland & Magoo', duration: 361, mood: 'Energetic', link: 'https://youtu.be/R6X2egvKD0M?si=XHFUF_BneJwaqHhk' },
+  { title: 'Self Care', artist: 'Mac Miller', duration: 347, mood: 'Chill', link: 'https://youtu.be/4HCctKOHh2c?si=sF68lYsE8HkkqF7C' },
+  { title: '911 ft. Mary J. Blige', artist: 'Wyclef Jean', duration: 266, mood: 'Romantic', link: 'https://youtu.be/L3Pua6D9DsE?si=e9g-ivr-Kn4g-ucH' },
 ];
 
 
 const playlists = [
-  { mood: 'Happy', songIDs: ['65e0309a9843765a36f82e35', '65e0309a9843765a36f82e33'], createdBy: '65e0309a9843765a36f82e2a' },
-  { mood: 'Sad', songIDs: ['65e0309a9843765a36f82e34'], createdBy: '65e0309a9843765a36f82e2c' },
-  { mood: 'Energetic', songIDs: ['65e0309a9843765a36f82e36', '65e0309a9843765a36f82e35'], createdBy: '65e0309a9843765a36f82e2b' },
-  { mood: 'Chill', songIDs: ['65e0309a9843765a36f82e37', '65e0309a9843765a36f82e35'], createdBy: '65e0309a9843765a36f82e29' },
-  { mood: 'Romantic', songIDs: ['65e0309a9843765a36f82e34', '65e0309a9843765a36f82e33'], createdBy: '65e0309a9843765a36f82e2d' },
+  { mood: 'Happy', songIDs: [], createdBy: '' },
+  { mood: 'Sad', songIDs: [], createdBy: '' },
+  { mood: 'Energetic', songIDs: [], createdBy: '' },
+  { mood: 'Chill', songIDs: [], createdBy: '' },
+  { mood: 'Romantic', songIDs: [], createdBy: '' },
 ];
 
 
