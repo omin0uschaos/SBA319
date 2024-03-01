@@ -8,8 +8,10 @@ import Users from './models/usersSchema.mjs';
 import Songs from './models/songsSchema.mjs';
 import Playlists from './models/playlistsSchema.mjs';
 import { users, songs, playlists } from './utilities/sampleData.mjs';
+import usersRouter from './routes/users.mjs';
 import songsRouter from './routes/songs.mjs';
 import playlistsRouter from './routes/playlists.mjs';
+
 
 
 
@@ -39,6 +41,7 @@ app.engine("mood", (filePath, options, callback) =>{
 app.set("pages", "./views");
 app.set("view engine", "mood");
 
+app.use("/users", usersRouter);
 app.use("/songs", songsRouter);
 app.use("/playlists", playlistsRouter);
 
