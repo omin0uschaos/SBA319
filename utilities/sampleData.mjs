@@ -16,11 +16,21 @@ const songs = [
 
 
 const playlists = [
-  { mood: 'Happy', songIDs: [], createdBy: '' },
-  { mood: 'Sad', songIDs: [], createdBy: '' },
-  { mood: 'Energetic', songIDs: [], createdBy: '' },
-  { mood: 'Chill', songIDs: [], createdBy: '' },
-  { mood: 'Romantic', songIDs: [], createdBy: '' },
+  { mood: 'Happy', songIDs: [], createdBy: "" },
+  { mood: 'Sad', songIDs: [], createdBy: "" },
+  { mood: 'Energetic', songIDs: [], createdBy: "" },
+  { mood: 'Chill', songIDs: [], createdBy: "" },
+  { mood: 'Romantic', songIDs: [], createdBy: "" },
+  { mood: 'Melancholic', songIDs: [], createdBy: "" },
+  { mood: 'Motivational', songIDs: [], createdBy: "" },
+  { mood: 'Relaxed', songIDs: [], createdBy: "" },
+  { mood: 'Angry', songIDs: [], createdBy: "" },
+  { mood: 'Hopeful', songIDs: [], createdBy: "" },
+  { mood: 'Nostalgic', songIDs: [], createdBy: "" },
+  { mood: 'Peaceful', songIDs: [], createdBy: "" },
+  { mood: 'Excited', songIDs: [], createdBy: "" },
+  { mood: 'Dreamy', songIDs: [], createdBy: "" },
+  { mood: 'Reflective', songIDs: [], createdBy: "" },
 ];
 
 

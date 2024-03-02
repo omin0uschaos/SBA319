@@ -49,23 +49,32 @@ router.get('/api', async (req, res) => {
 
 router.post('/add', async (req, res) => {
     try {
-        const { title, artist, duration, mood, link } = req.body
-        const newSong = new Songs({ title, artist, duration, mood, link});
+        const { title, artist, duration, mood, link } = req.body;
+        // Create and save the new song
+        const newSong = new Songs({ title, artist, duration, mood, link });
         await newSong.save();
 
-        const playlistToUpdate = await Playlists.find({mood: mood});
+        // Find playlists with a matching mood and update them
+        const playlistsToUpdate = await Playlists.find({ mood: mood });
+        const updatePromises = playlistsToUpdate.map(async (playlist) => {
+            playlist.songIDs.push(newSong._id); // Add the new song's _id
+            return playlist.save(); // Save the updated playlist
+        });
+        await Promise.all(updatePromises); // Wait for all updates to complete
+
+        // Prepare options for the response rendering
         const options = {
             title: "MoodAMP",
-            subTitle: `Song Added Success`,
-            content: `
-                <h1>Song Added Successfully</h1>
-            `
-        }
-        console.log(req.body);
+            subTitle: `Song Added Successfully`,
+            content: `<h1>Song Added Successfully</h1>`
+        };
+
+        // Render response with success message
+        res.render('index', options);
     } catch (error) {
         console.error(error);
         res.status(500).send('Error adding the song');
     }
-})
+});
 
 export default router;
