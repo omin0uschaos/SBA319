@@ -1,4 +1,4 @@
-# README.MD for MoodAMP Application
+# MoodAMP Application
 
 MoodAMP is a music application designed to match your mood with the perfect playlist. From creating and editing songs and playlists to exploring music curated for every emotion, MoodAMP offers a unique experience for music lovers. Follow the instructions below to set up and start using MoodAMP.
 
