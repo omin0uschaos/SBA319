@@ -30,5 +30,47 @@ background-color: rgba(221, 221, 221, 0.345) ;
 nav ul img{
     width: 80px;
     margin-left:20px;
+    margin-right:20px;
     filter: invert(1);
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 100px;
+    z-index: 1;
+    left:-20px;
+    top: 27px;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}
+main{
+    padding: 10px;
+}
+
+@media only screen and (max-width: 500px){
+    nav ul a{
+        padding: 10px 10px;
+    }
+    .dropdown-content {
+        left:-50px;
+    }
 }

@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 //third-party middleware
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
 //schema imports
 import Users from './models/usersSchema.mjs';
@@ -15,12 +16,13 @@ import Playlists from './models/playlistsSchema.mjs';
 //sample data import
 import { users, songs, playlists } from './utilities/sampleData.mjs';
 //express router imports
+import navigationRouter from './routes/navigation.mjs';
 import usersRouter from './routes/users.mjs';
 import songsRouter from './routes/songs.mjs';
 import playlistsRouter from './routes/playlists.mjs';
 import homeRouter from './routes/home.mjs';
 import errorHandler from './utilities/errorHandler.mjs'
-import { auth, checkToken } from './middleware/auth.mjs';
+import { checkToken } from './middleware/auth.mjs';
 
 dotenv.config();
 const app = express();
@@ -30,6 +32,7 @@ await mongoose.connect(process.env.MONGO_URI);
 
 app.use(express.json());
 
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
 
@@ -53,6 +56,7 @@ app.engine("mood", (filePath, options, callback) =>{
 app.set("pages", "./views");
 app.set("view engine", "mood");
 
+app.use('/navigation', navigationRouter); 
 app.use("/users", usersRouter);
 app.use("/songs", songsRouter);
 app.use("/playlists", playlistsRouter);

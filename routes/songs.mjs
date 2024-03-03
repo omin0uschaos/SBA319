@@ -1,6 +1,7 @@
 import express from 'express';
 import Songs from '../models/songsSchema.mjs';
 import Playlists from '../models/playlistsSchema.mjs'
+import { checkToken } from '../middleware/auth.mjs';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -9,7 +10,7 @@ router.get('/', async (req, res) => {
         let contentHtml = '<ul>';
 
         allSongs.forEach(song => {
-            contentHtml += `<li><a href="${song.link}">${song.artist} - ${song.title}</a></li>`;
+            contentHtml += `<li><a href="${song.link}">${song.artist} - ${song.title}</a></li><br>`;
         });
 
         contentHtml += '</ul>';
@@ -37,7 +38,7 @@ router.get('/', async (req, res) => {
     }
   });
 
-  router.get('/add', (req, res)=>{
+  router.get('/add', checkToken, (req, res)=>{
     const options = {
         title: "MoodAMP",
         subTitle: `Add New Song`,
@@ -74,6 +75,10 @@ router.get('/', async (req, res) => {
 router.post('/add', async (req, res) => {
     try {
         const { title, artist, duration, mood, link } = req.body;
+
+        // Assuming you have access to the user ID from the request
+        const userId = req.userId; // This assumes you've attached userId to req in your checkToken middleware
+
         // Create and save the new song
         const newSong = new Songs({ title, artist, duration, mood, link });
         await newSong.save();
@@ -82,6 +87,7 @@ router.post('/add', async (req, res) => {
         const playlistsToUpdate = await Playlists.find({ mood: mood });
         const updatePromises = playlistsToUpdate.map(async (playlist) => {
             playlist.songIDs.push(newSong._id); // Add the new song's _id
+            playlist.createdBy.push(userId); // Add the current user's _id
             return playlist.save(); // Save the updated playlist
         });
         await Promise.all(updatePromises); // Wait for all updates to complete
@@ -101,13 +107,14 @@ router.post('/add', async (req, res) => {
     }
 });
 
-router.get('/edit', async (req, res) => {
+
+router.get('/edit', checkToken, async (req, res) => {
     try {
         const allSongs = await Songs.find({});
         let contentHtml = '<ul>';
 
         allSongs.forEach(song => {
-            contentHtml += `<li><a href="/songs/edit/${song._id}">${song.artist} - ${song.title}</a> - <button onclick="confirmDelete('${song._id}')" style="background-color:red; color:white; cursor:pointer;">DELETE</button></li>`;
+            contentHtml += `<li><a href="/songs/edit/${song._id}">${song.artist} - ${song.title}</a> - <button onclick="confirmDelete('${song._id}')" style="background-color:red; color:white; cursor:pointer;">DELETE</button></li><br>`;
         });
 
         contentHtml += '</ul>';
@@ -143,7 +150,7 @@ router.get('/edit', async (req, res) => {
 });
 
 
-router.get('/edit/:songId', async (req, res) => {
+router.get('/edit/:songId', checkToken, async (req, res) => {
     try {
         const songId = req.params.songId;
         const song = await Songs.findById(songId);
@@ -220,7 +227,7 @@ router.patch('/update/:songId', async (req, res) => {
     }
 });
 
-router.delete('/delete/:songId', async (req, res) => {
+router.delete('/delete/:songId', checkToken, async (req, res) => {
     try {
         const { songId } = req.params;
         

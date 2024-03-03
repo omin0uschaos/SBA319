@@ -38,7 +38,7 @@ router.get('/api', async (req, res) => {
     }
   });
 
-router.get('/:playlistId', async (req, res) => {
+  router.get('/:playlistId', async (req, res) => {
     try {
         const playlistId = req.params.playlistId;
         const playlist = await Playlists.findById(playlistId);
@@ -46,22 +46,32 @@ router.get('/:playlistId', async (req, res) => {
           return res.status(404).send('Playlist not found');
         }
 
-        const songsPromises = playlist.songIDs.map(songId => {
-          return Songs.findById(songId);
-        });
+        // Fetch songs
+        const songsPromises = playlist.songIDs.map(songId => Songs.findById(songId));
         const songs = await Promise.all(songsPromises);
 
         let songList = '<ul>';
         songs.forEach(song => {
-
             songList += `<li><a href="${song.link}">${song.artist} - ${song.title}</a></li><br>`;
         });
         songList += '</ul>';
 
+        // Fetch contributors (users)
+        const usersPromises = playlist.createdBy.map(userId => Users.findById(userId));
+        const users = await Promise.all(usersPromises);
+
+        let contributorsList = 'Contributors: ';
+        users.forEach((user, index) => {
+            contributorsList += user.username + (index < users.length - 1 ? ', ' : '');
+        });
+
+        // Combine song list and contributors list into the content
+        const content = `<div>${songList}</div><div>${contributorsList}</div>`;
+
         const options = {
             title: "MoodAMP",
             subTitle: `${playlist.mood} Playlist`,
-            content: songList
+            content: content
         };
 
         res.render("index", options);
@@ -70,6 +80,7 @@ router.get('/:playlistId', async (req, res) => {
         res.status(500).send('Error fetching playlist');
     }
 });
+
 
 
 

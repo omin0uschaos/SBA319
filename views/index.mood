@@ -14,11 +14,56 @@
         <li><a href="/">Home</a></li>
         <li><a href="/playlists">Playlists</a></li>
         <li><a href="/songs">Songs</a></li>
-        <li><a href="/users/register">User</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropbtn">User</a>
+            <div class="dropdown-content" id="userDropdown">
+                <!-- The links will be dynamically generated -->
+            </div>
+        </li>
         <li></li>
     </ul>
 </nav>
+<main>
     <header><h1>#sub-title#</h1></header>
-   <main>#content#</main> 
+   <section>#content#</section> 
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Fetch user status and update dropdown
+        fetch('/navigation/userstatus')
+            .then(response => response.json())
+            .then(data => {
+                const userDropdown = document.getElementById('userDropdown');
+                let dropdownContent = "";
+                if (data.isLoggedIn) {
+                    dropdownContent = `
+                        <a href="/home/logout">Logout</a>
+                        <a href="/home/dashboard">Dashboard</a>
+                    `;
+                } else {
+                    dropdownContent = `
+                        <a href="/users/login">Login</a>
+                        <a href="/users/register">Register</a>
+                    `;
+                }
+                userDropdown.innerHTML = dropdownContent;
+            })
+            .catch(error => console.error('Error:', error));
+
+        // Toggle dropdown content
+        const dropbtn = document.querySelector('.dropbtn');
+        dropbtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent navigating to "#"
+            const dropdownContent = document.getElementById('userDropdown');
+            if (dropdownContent.style.display === 'block') {
+                dropdownContent.style.display = 'none';
+            } else {
+                dropdownContent.style.display = 'block';
+            }
+        });
+    });
+</script>
+
+
 </body>
 </html>
