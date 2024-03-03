@@ -77,4 +77,145 @@ router.post('/add', async (req, res) => {
     }
 });
 
+router.get('/edit', async (req, res) => {
+    try {
+        const allSongs = await Songs.find({});
+        let contentHtml = '<ul>';
+
+        allSongs.forEach(song => {
+            contentHtml += `<li><a href="/songs/edit/${song._id}">${song.artist} - ${song.title}</a> - <button onclick="confirmDelete('${song._id}')" style="background-color:red; color:white; cursor:pointer;">DELETE</button></li>`;
+        });
+
+        contentHtml += '</ul>';
+        contentHtml += `
+            <script>
+            function confirmDelete(songId) {
+                const isConfirmed = window.prompt('Type "delete" to confirm:');
+                if (isConfirmed.toLowerCase() === 'delete') {
+                    fetch('/songs/delete/' + songId, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/songs/edit'; // Redirect to the edit page
+                        } else {
+                            alert('Error deleting song');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            }
+            </script>`
+
+        const options = {
+            title: "MoodAMP",
+            subTitle: `Choose a song to edit`,
+            content: contentHtml
+        };
+
+        res.render("index", options);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching songs');
+    }
+});
+
+
+router.get('/edit/:songId', async (req, res) => {
+    try {
+        const songId = req.params.songId;
+        const song = await Songs.findById(songId);
+        if (!song) {
+            return res.status(404).send('Song not found');
+        }
+
+        // Define all possible moods
+        const moods = ["Happy", "Sad", "Energetic", "Chill", "Romantic", "Melancholic", "Motivational", "Relaxed", "Angry", "Hopeful", "Nostalgic", "Peaceful", "Excited", "Dreamy", "Reflective"];
+
+        const moodOptions = moods.map(mood => {
+            return `<option value="${mood}"${mood === song.mood ? ' selected' : ''}>${mood}</option>`;
+        }).join('\n');
+
+        const options = {
+            title: "MoodAMP - Edit Song",
+            subTitle: `Editing ${song.title}`,
+            content: `
+                <form action="/songs/update/${songId}?_method=PATCH" method="POST">
+
+                    <input type="text" name="title" value="${song.title}" placeholder="Song Title" id="song-title" required>
+                    <input type="text" name="artist" value="${song.artist}" placeholder="Artist" id="song-artist" required>
+                    <input type="number" name="duration" value="${song.duration}" min="0" placeholder="Song Duration(Seconds)" id="song-duration" required>
+                    <select name="mood" id="song-mood" required>
+                        <option value="">Choose Mood</option>
+                        ${moodOptions}
+                    </select>
+                    <input type="url" name="link" value="${song.link}" id="song-link" placeholder="Youtube URL(Include Http(s):" required>
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="submit" value="Update">
+                </form>
+            `
+        };
+
+        res.render('index', options);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching song');
+    }
+});
+
+
+router.patch('/update/:songId', async (req, res) => {
+    try {
+        const { title, artist, duration, mood, link } = req.body;
+        const songId = req.params.songId;
+
+        // Update the song
+        const updatedSong = await Songs.findByIdAndUpdate(songId, { title, artist, duration, mood, link }, { new: true });
+        if (!updatedSong) {
+            return res.status(404).send('Song not found');
+        }
+
+        // Remove the song from all playlists where it no longer matches the mood
+        await Playlists.updateMany(
+            { songIDs: songId },
+            { $pull: { songIDs: songId } }
+        );
+
+        // Add the song to playlists that match its new mood
+        const matchingPlaylists = await Playlists.find({ mood: mood });
+        const updatePlaylistPromises = matchingPlaylists.map(async playlist => {
+            if (!playlist.songIDs.includes(songId)) {
+                playlist.songIDs.push(songId); // Add the song's ID if it doesn't already exist
+            }
+            return playlist.save();
+        });
+        await Promise.all(updatePlaylistPromises);
+
+        res.redirect('/songs/edit');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating song');
+    }
+});
+
+router.delete('/delete/:songId', async (req, res) => {
+    try {
+        const { songId } = req.params;
+        
+        // Delete the song from the Songs collection
+        await Songs.findByIdAndDelete(songId);
+
+        //remove the song from all Playlists' songIDs arrays
+        await Playlists.updateMany({}, { $pull: { songIDs: songId } });
+
+        res.status(200).send('Song deleted successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error deleting song');
+    }
+});
+
+
+
+
+
+
 export default router;
