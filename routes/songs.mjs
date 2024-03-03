@@ -3,7 +3,31 @@ import Songs from '../models/songsSchema.mjs';
 import Playlists from '../models/playlistsSchema.mjs'
 const router = express.Router();
 
-router.get('/api', async (req, res) => {
+router.get('/', async (req, res) => {
+    try {
+        const allSongs = await Songs.find({});
+        let contentHtml = '<ul>';
+
+        allSongs.forEach(song => {
+            contentHtml += `<li><a href="${song.link}">${song.artist} - ${song.title}</a></li>`;
+        });
+
+        contentHtml += '</ul>';
+
+        const options = {
+            title: "MoodAMP",
+            subTitle: `Song List`,
+            content: contentHtml
+        };
+
+        res.render("index", options);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching songs');
+    }
+  });
+
+  router.get('/api', async (req, res) => {
     try {
       const allSongs = await Songs.find({});
       res.json(allSongs);

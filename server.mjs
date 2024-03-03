@@ -34,13 +34,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
 
 app.use(methodOverride('_method'));
-app.use((req, res, next) => {
-    console.log('Actual HTTP Method:', req.method);
-    console.log('Overridden Method:', req.body._method);
-    next();
-});
 app.use(express.static('styles'));
-
+app.use('/images', express.static('images'));
 
 app.engine("mood", (filePath, options, callback) =>{
     fs.readFile(filePath, (err, content) =>{
@@ -74,9 +69,6 @@ app.get('/seed', async (req, res)=>{
     await Songs.create(songs);
     res.send('Database Seeded');
 })
-
-
-
 
 //separate seeding for playlist, special consideration made for unique ids from database (RUN THIS SECOND!)
 app.get('/seedplaylist', async (req, res) => {
@@ -115,17 +107,53 @@ app.get('/seedplaylist', async (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
 
-//Read
-app.get('/', auth, async (req, res) => {
-    try {
-      const allSongs = await Songs.find({});
-      res.json(allSongs);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ msg: 'Server Error' });
-    }
+        const options = {
+            title: "MoodAMP",
+            subTitle: `HOMEPAGE`,
+            content: `
+            <h1>Welcome to MoodAMP</h1>
+            <p>Your ultimate destination for music that matches every mood and moment.</p>
+        
+    
+        <section id="discover-music">
+            <h2>Discover Music for Every Mood</h2>
+            <ul>
+                <li><strong>Happy</strong> - Let the joy flow with tracks that bring out your brightest smile.</li>
+                <li><strong>Sad</strong> - Find comfort in melodies that understand your sorrow.</li>
+                <li><strong>Energetic</strong> - Boost your energy with beats that propel you forward.</li>
+                <li><strong>Chill</strong> - Unwind and relax with soothing tunes that help you calm your mind.</li>
+                <li><strong>Romantic</strong> - Ignite your passion with love songs that speak to the heart.</li>
+                <li><strong>Reflective</strong> - Indulge in introspection with music that encourages you to ponder life.</li>
+            </ul>
+        </section>
+    
+        <section id="features">
+            <h2>Features</h2>
+            <p>Explore our carefully curated playlists, add your favorite music, discover new music, and enjoy seamless streaming.</p>
+        </section>
+    
+        <section id="join-community">
+            <h2>Join Our Community</h2>
+            <p>MoodAMP is a community of music lovers. Share your favorite playlists, discover new music, and connect with others.</p>
+        </section>
+    
+        <section id="start-listening">
+            <h2>Start Listening Today</h2>
+            <p>Ready to let your emotions lead the way? Dive into MoodAMP now and discover the perfect playlists for every mood.</p>
+        </section>`
+        };
+
+        res.render("index", options);
   });
+
+app.use('*', (req, res, next) => {
+    const error = new Error('Page not found');
+    error.status = 404;
+    next(error);
+});
+//errorHandler
 app.use(errorHandler);
 //Listen
 app.listen(PORT, () => {

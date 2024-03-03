@@ -16,7 +16,7 @@ router.get('/api', async (req, res) => {
     }
   });
 //register page display
-router.get('/register', checkToken, (req, res)=>{
+router.get('/register', (req, res)=>{
     const options = {
         title: "MoodAMP",
         subTitle: `User Registration`,
