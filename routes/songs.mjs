@@ -212,8 +212,24 @@ router.delete('/delete/:songId', async (req, res) => {
         res.status(500).send('Error deleting song');
     }
 });
+//test validation rules route
+router.get('/validationtest', async (req, res) => {
+    const invalidSong = {
+        title: "Invalid Song Title",
+        artist: "Invalid Artist",
+        duration: -10, 
+        mood: "Invalid Mood",
+        link: "http://invalidlink.com"
+    };
 
-
+    try {
+        await Songs.create(invalidSong);
+        res.send("Validation Test Passed");
+    } catch (error) {
+        console.error("Validation Error:", error);
+        res.status(400).send("Validation Test Failed: " + error.message);
+    }
+});
 
 
 
