@@ -241,6 +241,43 @@ router.delete('/delete/:songId', checkToken, async (req, res) => {
         res.status(500).send('Error deleting song');
     }
 });
+
+router.get('/create-title-index', async (req, res) => {
+    try {
+        await Songs.createIndex({ title: 1 }); // Creates an ascending index on the title field
+        res.send("Index on song titles created successfully.");
+    } catch (error) {
+        console.error("Error creating index: ", error);
+        res.status(500).send('Error creating index on song titles');
+    }
+});
+
+router.get('/sort-by-title', async (req, res) => {
+    try {
+        // make use of the index
+        const songs = await Songs.find({}).sort({ title: 1 });
+        let contentHtml = '<ul>';
+
+        songs.forEach(song => {
+            contentHtml += `<li>${song.artist} - ${song.title}</li>`;
+        });
+
+        contentHtml += '</ul>';
+
+        const options = {
+            title: "MoodAMP",
+            subTitle: `Songs Sorted by Title`,
+            content: contentHtml
+        };
+
+        res.render("index", options);
+    } catch (error) {
+        console.error("Error fetching songs: ", error);
+        res.status(500).send('Error fetching songs sorted by title');
+    }
+});
+
+
 //test validation rules route
 router.get('/validationtest', async (req, res) => {
     const invalidSong = {

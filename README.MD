@@ -37,6 +37,17 @@ JWT_SECRET=YourRandomSecretKeyHere
    - Open your web browser and go to `localhost:<PORT>/seed` to seed the users and songs collections.
    - Next, navigate to `localhost:<PORT>/seedplaylist` to seed the playlists collection.
 
+5. **Create and use Index:**
+   After populating your database with the initial seed data, you can create an index on the title field of the songs collection to improve query performance, especially for operations that sort or search songs by title.
+
+    1. Create Index on Song Titles:
+
+        Navigate to localhost:<PORT>/songs/create-title-index in your web browser. This operation creates an index on the title field of the songs collection, allowing for faster retrieval of songs based on their titles.
+
+    2.Test the Index:
+
+        To verify the performance improvement and functionality of the index, go to localhost:<PORT>/songs/sort-by-title. This page will display all songs sorted by their title, utilizing the newly created index for efficient sorting.
+
 Now, your app is ready to use with full functionality.
 
 ### Features
