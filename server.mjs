@@ -55,7 +55,6 @@ app.engine("mood", (filePath, options, callback) =>{
 
 app.set("pages", "./views");
 app.set("view engine", "mood");
-
 app.use('/navigation', navigationRouter); 
 app.use("/users", usersRouter);
 app.use("/songs", songsRouter);
@@ -110,7 +109,7 @@ app.get('/seedplaylist', async (req, res) => {
         res.status(500).send('Error seeding playlist database');
     }
 });
-
+//home page route
 app.get('/', (req, res) => {
 
         const options = {
@@ -119,7 +118,6 @@ app.get('/', (req, res) => {
             content: `
             <h1>Welcome to MoodAMP</h1>
             <p>Your ultimate destination for music that matches every mood and moment.</p>
-        
     
         <section id="discover-music">
             <h2>Discover Music for Every Mood</h2>
@@ -132,17 +130,14 @@ app.get('/', (req, res) => {
                 <li><strong>Reflective</strong> - Indulge in introspection with music that encourages you to ponder life.</li>
             </ul>
         </section>
-    
         <section id="features">
             <h2>Features</h2>
             <p>Explore our carefully curated playlists, add your favorite music, discover new music, and enjoy seamless streaming.</p>
         </section>
-    
         <section id="join-community">
             <h2>Join Our Community</h2>
             <p>MoodAMP is a community of music lovers. Share your favorite playlists, discover new music, and connect with others.</p>
         </section>
-    
         <section id="start-listening">
             <h2>Start Listening Today</h2>
             <p>Ready to let your emotions lead the way? Dive into MoodAMP now and discover the perfect playlists for every mood.</p>

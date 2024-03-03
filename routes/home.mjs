@@ -27,7 +27,7 @@ router.get('/dashboard', checkToken, (req, res) => {
 router.get('/logout', (req, res) => {
     // Clear the token/cookie
     res.clearCookie('token');
-    res.redirect('/'); // Redirect to the homepage or any other desired page after logout
+    res.redirect('/'); // Redirect to the homepage
 });
 
 export default router;

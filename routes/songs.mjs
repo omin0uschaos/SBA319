@@ -76,8 +76,7 @@ router.post('/add', async (req, res) => {
     try {
         const { title, artist, duration, mood, link } = req.body;
 
-        // Assuming you have access to the user ID from the request
-        const userId = req.userId; // This assumes you've attached userId to req in your checkToken middleware
+        const userId = req.userId;
 
         // Create and save the new song
         const newSong = new Songs({ title, artist, duration, mood, link });
@@ -86,9 +85,9 @@ router.post('/add', async (req, res) => {
         // Find playlists with a matching mood and update them
         const playlistsToUpdate = await Playlists.find({ mood: mood });
         const updatePromises = playlistsToUpdate.map(async (playlist) => {
-            playlist.songIDs.push(newSong._id); // Add the new song's _id
-            playlist.createdBy.push(userId); // Add the current user's _id
-            return playlist.save(); // Save the updated playlist
+            playlist.songIDs.push(newSong._id); 
+            playlist.createdBy.push(userId);
+            return playlist.save(); 
         });
         await Promise.all(updatePromises); // Wait for all updates to complete
 
@@ -158,7 +157,6 @@ router.get('/edit/:songId', checkToken, async (req, res) => {
             return res.status(404).send('Song not found');
         }
 
-        // Define all possible moods
         const moods = ["Happy", "Sad", "Energetic", "Chill", "Romantic", "Melancholic", "Motivational", "Relaxed", "Angry", "Hopeful", "Nostalgic", "Peaceful", "Excited", "Dreamy", "Reflective"];
 
         const moodOptions = moods.map(mood => {

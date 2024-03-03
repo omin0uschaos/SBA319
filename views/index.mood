@@ -17,7 +17,6 @@
         <li class="dropdown">
             <a href="#" class="dropbtn">User</a>
             <div class="dropdown-content" id="userDropdown">
-                <!-- The links will be dynamically generated -->
             </div>
         </li>
         <li></li>
@@ -29,7 +28,6 @@
 </main>
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
-        // Fetch user status and update dropdown
         fetch('/navigation/userstatus')
             .then(response => response.json())
             .then(data => {
@@ -50,7 +48,6 @@
             })
             .catch(error => console.error('Error:', error));
 
-        // Toggle dropdown content
         const dropbtn = document.querySelector('.dropbtn');
         dropbtn.addEventListener('click', function(event) {
             event.preventDefault(); // Prevent navigating to "#"

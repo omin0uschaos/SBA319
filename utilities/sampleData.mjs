@@ -45,7 +45,6 @@ const songs = [
   { title: "King's Dead", artist: 'Jay Rock, Kendrick Lamar, Future, James Blake', duration: 263, mood: 'Energetic', link: 'https://www.youtube.com/watch?v=VwAnsAUYnw4' },
 ];
 
-
 const playlists = [
   { mood: 'Happy', songIDs: [], createdBy: [] },
   { mood: 'Sad', songIDs: [], createdBy: [] },
@@ -63,6 +62,5 @@ const playlists = [
   { mood: 'Dreamy', songIDs: [], createdBy: [] },
   { mood: 'Reflective', songIDs: [], createdBy: [] },
 ];
-
 
 export { users, songs, playlists };

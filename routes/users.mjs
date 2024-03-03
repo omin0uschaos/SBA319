@@ -87,7 +87,7 @@ router.post('/login', async (req, res) => {
         // Set the token as a cookie
         res.cookie('token', token, { httpOnly: true });
 
-        res.redirect('/'); // Redirect to the homepage or any other page you desire after successful login
+        res.redirect('/'); // Redirect to the homepage
     } catch (error) {
         console.error(error);
         res.status(500).send('Error logging in');

@@ -14,7 +14,6 @@ router.get('/userstatus', (req, res) => {
         if (err) {
             return res.json({ isLoggedIn: false });
         }
-        // Optionally return some user info
         res.json({ isLoggedIn: true, username: decoded.username });
     });
 });
